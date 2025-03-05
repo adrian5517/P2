@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const userRouter = require('./routes/userRoute'); // Ensure this path is correct
+const errorMiddleware = require('./middleware/errorMiddleware');
 
 const port = process.env.PORT || 3001;
 const DB_URI = process.env.DB_URI;
@@ -10,9 +11,12 @@ const DB_URI = process.env.DB_URI;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.get('/', (req, res) => {
-    res.send('Server Test');
-});
+
+app.use(errorMiddleware);
+
+app.get('/', (req , res) =>{
+    res.send('Welcome to the User API');
+})
 
 app.use('/api/users', userRouter);
 
